@@ -1,0 +1,33 @@
+<p>Hey Cassava,</p>
+
+<div class="goals_list" >
+
+      {{#if goals.dueToday}}
+            <div style="margin-top:10px; padding: 5px">
+        <p>The following goals are due today!</p>
+        <br>
+         {{#each goals.dueToday}}
+         <div style="color: white; background-color: green; margin-bottom: 3px; padding:10px">
+             <div>{{this.name}}</div>
+             <div>Due: {{ this.dueDateStr }}</div>
+         </div>
+         {{/each}}
+      </div>
+      {{/if}}
+
+      {{#if goals.pastDue}}
+            <div style="margin-top:10px; padding: 5px">
+        <p>The following goals are past due!</p>
+        <br>
+          {{#each goals.pastDue}}
+          <div style="color: white; background-color: red; margin-bottom: 3px; padding:10px">
+              <div>{{this.name}}</div>
+              <div>Due: {{ this.dueDateStr }}</div>
+          </div>
+          {{/each}} 
+      </div>
+      {{/if}}
+
+</div>
+
+
