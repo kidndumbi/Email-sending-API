@@ -1,12 +1,21 @@
-import { Controller, Get } from '@nestjs/common';
+import { ISendMailOptions } from '@nestjs-modules/mailer';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller()
+@Controller('API')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  hey() {
+    return 'here';
+  }
+
+  @Post('sendMail')
+  async sendMail(@Body() sendMailOptions: ISendMailOptions): Promise<string> {
+    console.log('HI there');
+    const sendresult = await this.appService.sendMail(sendMailOptions);
+    console.log('sendresult', sendresult);
+    return 'slicer';
   }
 }
