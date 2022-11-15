@@ -1,5 +1,5 @@
 import { ITemplate } from './../interface/ITemplate.interface';
-import { readFile, writeFile } from 'fs/promises';
+import { readFile } from 'fs/promises';
 /*
 https://docs.nestjs.com/providers#services
 */
@@ -7,19 +7,9 @@ https://docs.nestjs.com/providers#services
 import { Injectable } from '@nestjs/common';
 import { EmailTemplateModel } from 'src/models/emailTemplateData.model';
 import { CreateTemplateDto } from 'src/dto/createTemplate.dto';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class FileDbService implements ITemplate {
-  constructor() {
-    // this.getAllTemplates().then((data) => {
-    //   console.log(data);
-    // });
-    // this.getSingleTemplate('slskjdlsdjlskdSomethingWung').then((data) => {
-    //   console.log(data);
-    // });
-  }
-
   async getAllTemplates(): Promise<EmailTemplateModel[]> {
     try {
       return this.getFileJson();
@@ -43,12 +33,10 @@ export class FileDbService implements ITemplate {
   createNewTemplate(
     createTemplateDto: CreateTemplateDto,
   ): Promise<EmailTemplateModel | null> {
-    console.log('createTemplateDto ::: ', createTemplateDto);
-
     return Promise.resolve({
       templateId: 'slskjdlsdjlskdSomethingWung',
       description: 'template for goals status email',
-      filePath: './confirmation',
+      url: 'https://res.cloudinary.com/cassavacloudinary/raw/upload/v1668485889/email-templates/confirmation.hbs',
       name: 'goals notification',
     });
   }
