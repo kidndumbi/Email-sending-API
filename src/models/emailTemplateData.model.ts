@@ -1,6 +1,6 @@
 export interface EmailTemplateModel {
   templateId: string;
-  filePath: string;
+  url: string;
   description: string;
   name: string;
 }

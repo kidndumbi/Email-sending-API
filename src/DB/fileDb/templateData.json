@@ -2,7 +2,7 @@
   {
     "templateId": "slskjdlsdjlskdSomethingWung",
     "description": "template for goals status email",
-    "filePath": "./confirmation",
+    "url": "https://res.cloudinary.com/cassavacloudinary/raw/upload/v1668485889/email-templates/confirmation.hbs",
     "name": "goals notification"
   }
 ]

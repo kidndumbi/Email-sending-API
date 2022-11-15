@@ -2,7 +2,8 @@ import { FileDbService } from './services/filedb.service';
 import { SendEmailDto } from './dto/sendEmail.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
-import { CreateTemplateDto } from './dto/createTemplate.dto';
+import { DownloaderHelperWrapper } from './utils/download-helper-wrapper';
+import { unlink } from 'fs/promises';
 
 @Injectable()
 export class AppService {
@@ -13,22 +14,23 @@ export class AppService {
 
   async sendMail(sendEmailDto: SendEmailDto) {
     try {
-      const { filePath } = await this.mailDb.getSingleTemplate(
+      const singleTemplatedata = await this.mailDb.getSingleTemplate(
         sendEmailDto.templateId,
       );
+
+      const createdFileData = await new DownloaderHelperWrapper(
+        singleTemplatedata.url,
+        __dirname + '/./templates/',
+      ).download();
+
       await this.mailerService.sendMail({
         ...sendEmailDto.sendMailOptions,
-        template: filePath,
+        template: './' + createdFileData.fileName,
       });
+
+      await unlink(createdFileData.filePath);
     } catch (error) {
       console.log('error:::::: ', error);
     }
   }
-
-  // async createTemplate(createTemplateDto: CreateTemplateDto) {
-  //   const emailTemplateData = await this.mailDb.createNewTemplate(
-  //     createTemplateDto,
-  //   );
-  //   return emailTemplateData;
-  // }
 }
