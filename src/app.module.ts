@@ -1,3 +1,4 @@
+import { FileDbService } from './services/filedb.service';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -40,6 +41,6 @@ import { join } from 'path';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [FileDbService, AppService],
 })
 export class AppModule {}
