@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateTemplateDto } from './dto/createTemplate.dto';
 import { SendEmailDto } from './dto/sendEmail.dto';
@@ -19,12 +19,6 @@ export class AppController {
     return 'email sent';
   }
 
-  // @Post('createTemplate')
-  // async createTemplate(@Body() createTemplateDto: CreateTemplateDto) {
-  //   console.log(createTemplateDto);
-  //   return 'done';
-  // }
-
   @Post('createTemplate')
   async createTemplate(
     @Body() createTemplateDto: CreateTemplateDto,
@@ -33,5 +27,10 @@ export class AppController {
       createTemplateDto,
     );
     return emailTemplateData;
+  }
+
+  @Delete('/deleteTemplate/:templateId')
+  async deleteTemplate(@Param('templateId') templateId: string) {
+    return this.appService.deleteTemplate(templateId);
   }
 }
