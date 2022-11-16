@@ -2,8 +2,7 @@ import { FileDbService } from './services/filedb.service';
 import { SendEmailDto } from './dto/sendEmail.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
-import { DownloaderHelperWrapper } from './utils/download-helper-wrapper';
-import { unlink } from 'fs/promises';
+import { unlink, writeFile } from 'fs/promises';
 
 @Injectable()
 export class AppService {
@@ -18,17 +17,17 @@ export class AppService {
         sendEmailDto.templateId,
       );
 
-      const createdFileData = await new DownloaderHelperWrapper(
-        singleTemplatedata.url,
-        __dirname + '/./templates/',
-      ).download();
+      const fileName = `${singleTemplatedata.templateId}.hbs`;
+      const filePath = __dirname + '/./templates/' + fileName;
+
+      await writeFile(filePath, singleTemplatedata.content);
 
       await this.mailerService.sendMail({
         ...sendEmailDto.sendMailOptions,
-        template: './' + createdFileData.fileName,
+        template: './' + fileName,
       });
 
-      await unlink(createdFileData.filePath);
+      await unlink(filePath);
     } catch (error) {
       console.log('error:::::: ', error);
     }

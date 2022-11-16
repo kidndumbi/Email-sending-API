@@ -2,7 +2,7 @@
   {
     "templateId": "slskjdlsdjlskdSomethingWung",
     "description": "template for goals status email",
-    "url": "https://res.cloudinary.com/cassavacloudinary/raw/upload/v1668485889/email-templates/confirmation.hbs",
+    "content": "<p class=\"sweat\">Hey {{ name }},</p><p>Please click below to confirm your email</p><p><a href=\"{{ url }}\">Confirm</a></p><p>If you did not request this email you can safely ignore it.</p>",
     "name": "goals notification"
   }
 ]

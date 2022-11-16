@@ -9,8 +9,9 @@ import { join } from 'path';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     MailerModule.forRootAsync({
-      imports: [ConfigModule.forRoot()], // import module if not enabled globally
+      //imports: [ConfigModule.forRoot()], // import module if not enabled globally
       useFactory: async (config: ConfigService) => {
         console.log('HOST: ', config.get('MAIL_HOST'));
         return {
