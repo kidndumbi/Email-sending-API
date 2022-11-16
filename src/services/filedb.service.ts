@@ -36,7 +36,7 @@ export class FileDbService implements ITemplate {
     return Promise.resolve({
       templateId: 'slskjdlsdjlskdSomethingWung',
       description: 'template for goals status email',
-      url: 'https://res.cloudinary.com/cassavacloudinary/raw/upload/v1668485889/email-templates/confirmation.hbs',
+      content: '<div>HI</div>',
       name: 'goals notification',
     });
   }

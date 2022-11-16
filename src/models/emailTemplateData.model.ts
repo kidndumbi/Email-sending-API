@@ -1,6 +1,6 @@
 export interface EmailTemplateModel {
   templateId: string;
-  url: string;
+  content: string;
   description: string;
   name: string;
 }

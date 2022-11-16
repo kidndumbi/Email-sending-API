@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateTemplateDto } from './dto/createTemplate.dto';
 import { SendEmailDto } from './dto/sendEmail.dto';
+import { PlainBody } from './decorators/plainbody.decorator';
 
 @Controller('API')
 export class AppController {
@@ -16,6 +17,12 @@ export class AppController {
   async sendMail(@Body() sendEmailDto: SendEmailDto): Promise<string> {
     await this.appService.sendMail(sendEmailDto);
     return 'email sent';
+  }
+
+  @Post('createTemplate')
+  async createTemplate(@Body() createTemplateDto: CreateTemplateDto) {
+    console.log(createTemplateDto);
+    return 'done';
   }
 
   // @Post('createTemplate')
