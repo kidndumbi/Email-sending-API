@@ -1,5 +1,6 @@
 import { ITemplate } from './../interface/ITemplate.interface';
-import { readFile } from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
+import { v4 as uuidv4 } from 'uuid';
 /*
 https://docs.nestjs.com/providers#services
 */
@@ -30,15 +31,27 @@ export class FileDbService implements ITemplate {
     }
   }
 
-  createNewTemplate(
+  async createNewTemplate(
     createTemplateDto: CreateTemplateDto,
   ): Promise<EmailTemplateModel | null> {
-    return Promise.resolve({
-      templateId: 'slskjdlsdjlskdSomethingWung',
-      description: 'template for goals status email',
-      content: '<div>HI</div>',
-      name: 'goals notification',
-    });
+    try {
+      const templateId = uuidv4();
+
+      const templateData: EmailTemplateModel = {
+        ...createTemplateDto,
+        templateId,
+      };
+
+      const fileData = await this.getFileJson();
+      fileData.push(templateData);
+
+      await writeFile(
+        __dirname + '/../DB/fileDb/templateData.json',
+        JSON.stringify(fileData),
+      );
+
+      return templateData;
+    } catch (error) {}
   }
 
   deleteTemplate(id: string) {

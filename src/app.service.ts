@@ -3,6 +3,8 @@ import { SendEmailDto } from './dto/sendEmail.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { unlink, writeFile } from 'fs/promises';
+import { CreateTemplateDto } from './dto/createTemplate.dto';
+import { EmailTemplateModel } from './models/emailTemplateData.model';
 
 @Injectable()
 export class AppService {
@@ -31,5 +33,12 @@ export class AppService {
     } catch (error) {
       console.log('error:::::: ', error);
     }
+  }
+
+  async createTemplate(
+    createTemplateDto: CreateTemplateDto,
+  ): Promise<EmailTemplateModel> {
+    const template = await this.mailDb.createNewTemplate(createTemplateDto);
+    return template;
   }
 }
