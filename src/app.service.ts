@@ -1,16 +1,16 @@
-import { FileDbService } from './services/filedb.service';
 import { SendEmailDto } from './dto/sendEmail.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { unlink, writeFile } from 'fs/promises';
 import { CreateTemplateDto } from './dto/createTemplate.dto';
 import { EmailTemplateModel } from './models/emailTemplateData.model';
+import { MongoDbService } from './DB/mongoDB/mongodb.service';
 
 @Injectable()
 export class AppService {
   constructor(
     private mailerService: MailerService,
-    private mailDb: FileDbService,
+    private mailDb: MongoDbService,
   ) {}
 
   async sendMail(sendEmailDto: SendEmailDto) {
@@ -40,5 +40,9 @@ export class AppService {
   ): Promise<EmailTemplateModel> {
     const template = await this.mailDb.createNewTemplate(createTemplateDto);
     return template;
+  }
+
+  async deleteTemplate(templateId: string) {
+    return await this.mailDb.deleteTemplate(templateId);
   }
 }

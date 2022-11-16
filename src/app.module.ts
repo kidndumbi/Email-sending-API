@@ -1,3 +1,5 @@
+import { MongoDbModule } from './DB/mongoDB/mongodb.module';
+import { MongoDbService } from './DB/mongoDB/mongodb.service';
 import { FileDbService } from './services/filedb.service';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -6,9 +8,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
+    MongoDbModule,
     ConfigModule.forRoot({ isGlobal: true }),
     MailerModule.forRootAsync({
       //imports: [ConfigModule.forRoot()], // import module if not enabled globally
@@ -38,6 +42,16 @@ import { join } from 'path';
         };
       },
 
+      inject: [ConfigService],
+    }),
+    MongooseModule.forRootAsync({
+      useFactory: async (config: ConfigService) => ({
+        uri: `mongodb+srv://${config.get('MONGODB_USERNAME')}:${config.get(
+          'MONGODB_PASSWORD',
+        )}@cluster0.loagp.mongodb.net/${config.get(
+          'MONGODB_DATABASE',
+        )}?retryWrites=true&w=majority`,
+      }),
       inject: [ConfigService],
     }),
   ],
