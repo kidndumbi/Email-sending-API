@@ -5,13 +5,18 @@ import { unlink, writeFile } from 'fs/promises';
 import { CreateTemplateDto } from './dto/createTemplate.dto';
 import { EmailTemplateModel } from './models/emailTemplateData.model';
 import { MongoDbService } from './DB/mongoDB/mongodb.service';
+import { UpdateTemplateDto } from './dto/updateTemplate.dto';
 
 @Injectable()
 export class AppService {
   constructor(
     private mailerService: MailerService,
     private mailDb: MongoDbService,
-  ) {}
+  ) { }
+
+  async getTemplates() {
+    return this.mailDb.getAllTemplates();
+  }
 
   async sendMail(sendEmailDto: SendEmailDto) {
     try {
@@ -44,5 +49,9 @@ export class AppService {
 
   async deleteTemplate(templateId: string) {
     return await this.mailDb.deleteTemplate(templateId);
+  }
+
+  async updateTemplate(updateTemplateDto: UpdateTemplateDto): Promise<EmailTemplateModel> {
+    return this.mailDb.updateTemplate(updateTemplateDto);
   }
 }

@@ -12,17 +12,18 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ITemplate } from 'src/interface/ITemplate.interface';
 import { CreateTemplateDto } from 'src/dto/createTemplate.dto';
 import { EmailTemplateModel } from 'src/models/emailTemplateData.model';
+import { UpdateTemplateDto } from 'src/dto/updateTemplate.dto';
 
 @Injectable()
 export class MongoDbService implements ITemplate {
   constructor(
     @InjectModel(EmailTemplate.name)
     private emailTemplatelModel: Model<EmailTemplateDocument>,
-  ) {}
+  ) { }
 
   getAllTemplates(): Promise<EmailTemplateModel[]> {
     try {
-      return this.emailTemplatelModel.find().exec();
+      return this.emailTemplatelModel.find({}).exec();
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -48,6 +49,24 @@ export class MongoDbService implements ITemplate {
   }
 
   deleteTemplate(templateId: string): Promise<any> {
-    return this.emailTemplatelModel.findByIdAndRemove(templateId).exec();
+
+    try {
+      return this.emailTemplatelModel.findByIdAndRemove(templateId).exec();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async updateTemplate(updateTemplateDto: UpdateTemplateDto): Promise<EmailTemplateModel> {
+
+    const { templateId, ...rest } = updateTemplateDto;
+
+    try {
+      const saved = await this.emailTemplatelModel.findByIdAndUpdate(templateId, rest);
+      return saved;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+
   }
 }
