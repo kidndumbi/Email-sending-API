@@ -19,7 +19,7 @@ export class MongoDbService implements ITemplate {
   constructor(
     @InjectModel(EmailTemplate.name)
     private emailTemplatelModel: Model<EmailTemplateDocument>,
-  ) { }
+  ) {}
 
   getAllTemplates(): Promise<EmailTemplateModel[]> {
     try {
@@ -49,7 +49,6 @@ export class MongoDbService implements ITemplate {
   }
 
   deleteTemplate(templateId: string): Promise<any> {
-
     try {
       return this.emailTemplatelModel.findByIdAndRemove(templateId).exec();
     } catch (error) {
@@ -57,16 +56,16 @@ export class MongoDbService implements ITemplate {
     }
   }
 
-  async updateTemplate(updateTemplateDto: UpdateTemplateDto): Promise<EmailTemplateModel> {
-
-    const { templateId, ...rest } = updateTemplateDto;
+  async updateTemplate(
+    updateTemplateDto: UpdateTemplateDto,
+  ): Promise<EmailTemplateModel> {
+    const { _id, ...rest } = updateTemplateDto;
 
     try {
-      const saved = await this.emailTemplatelModel.findByIdAndUpdate(templateId, rest);
+      const saved = await this.emailTemplatelModel.findByIdAndUpdate(_id, rest);
       return saved;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
-
   }
 }
