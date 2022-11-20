@@ -1,5 +1,4 @@
 import { MongoDbModule } from './DB/mongoDB/mongodb.module';
-import { MongoDbService } from './DB/mongoDB/mongodb.service';
 import { FileDbService } from './services/filedb.service';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -9,9 +8,13 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    }),
     MongoDbModule,
     ConfigModule.forRoot({ isGlobal: true }),
     MailerModule.forRootAsync({
